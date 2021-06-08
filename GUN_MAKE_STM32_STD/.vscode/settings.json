@@ -36,7 +36,7 @@
 		"USER/*.uvguix.*": true,
 		"keilkilll.bat": true,
 		"OBJ":true,
-		"STM32F10x_FWLib":true,
+		// "STM32F10x_FWLib":true,
 		"Build":true,
 		"*.code-workspace":true,
 		".vscode/.cortex-debug.*":true,
