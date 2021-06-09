@@ -1,4 +1,5 @@
 /keilkilll.bat
+/*/keilkilll.bat
 /proteus仿真
 /PWM产生
 /STM32作串口收发
@@ -64,3 +65,17 @@
 /机械臂
 /*/Build
 /*/OBJ
+/*/*/Build
+/*/*/OBJ
+/*/USER/*.uvgui.*
+/*/*/USER/*.uvgui.*
+/*/USER/*.uvopt
+/*/*/USER/*.uvopt
+/*/USER/*.uvguix.*
+/*/*/USER/*.uvguix.*
+/*/USER/*.uvoptx
+/*/*/USER/*.uvoptx
+/*/USER/*.saved_uv4
+/*/*/USER/*.saved_uv4
+/*/USER/*.uvprojx
+/*/*/USER/*.uvprojx
