@@ -30,7 +30,7 @@
 		"USER/*.uvprojx": true,
 		"keilkilll.bat": true,
 		"OBJ":true,
-		"STM32F10x_FWLib":true,
+		// "STM32F10x_FWLib":true,
 		"USER/JLinkLog.txt":true,
 		"USER/LED.uvguix.Administrator":true,
 		"USER/LED.uvguix.YMZ":true,
