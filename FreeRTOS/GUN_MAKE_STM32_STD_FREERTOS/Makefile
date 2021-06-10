@@ -68,6 +68,7 @@
 ######################################
 # TARGET = $(notdir $(CURDIR))		#设置生成目标名为工程文件夹名
 TARGET = target
+PRINTF_FLOAT = 1
 
 ######################################
 # building variables
@@ -197,7 +198,12 @@ CFLAGS += -MMD -MP -MF"$(@:%.o=%.d)"
 # libraries
 LIBS = -lc -lm -lnosys
 LIBDIR =
-LDFLAGS = $(MCU) -specs=nano.specs -T$(LDSCRIPT) $(LIBDIR) $(LIBS) -Wl,-Map=$(BUILD_DIR)/$(TARGET).map,--cref -Wl,--gc-sections
+ifeq ($(PRINTF_FLOAT), 1)
+GCC_FLOAT = -u _printf_float
+else
+GCC_FLOAT =
+endif
+LDFLAGS = $(MCU) -specs=nano.specs -T$(LDSCRIPT) $(LIBDIR) $(LIBS) -Wl,-Map=$(BUILD_DIR)/$(TARGET).map,--cref -Wl,--gc-sections $(GCC_FLOAT)
 
 # default action: build all
 PHONY += all

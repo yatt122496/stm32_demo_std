@@ -18,6 +18,7 @@ int main(void)
 	u16 t;
 	u16 len;
 	u16 times=0;
+	float num = 0.1f;
 
 	delay_init();	    	 //延时函数初始化
 	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2); //设置NVIC中断分组2:2位抢占优先级，2位响应优先级
@@ -42,7 +43,11 @@ int main(void)
 				printf("\r\n精英STM32开发板 串口实验\r\n");
 				printf("正点原子@ALIENTEK\r\n\r\n");
 			}
-			if(times%200==0)printf("请输入数据,以回车键结束\n");
+			if(times%200==0){
+				printf("请输入数据,以回车键结束\n");
+				printf("float num = %.4f\n", num);
+				num += 0.1f;
+			}
 			if(times%30==0)LED0=!LED0;//闪烁LED,提示系统正在运行.
 			delay_ms(10);
 		}

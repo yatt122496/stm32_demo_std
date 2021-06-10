@@ -74,6 +74,7 @@ TARGET = target
 ######################################
 # 是否会进行调试
 DEBUG = 1
+PRINTF_FLOAT = 1
 
 # optimization    ## 选择优化等级，优化等级低->高，可参考Keil的设置，如果程序运行不理想，优化程序或降低优化等级
 # OPT = -O0        ## 没有优化。
@@ -192,7 +193,12 @@ CFLAGS += -MMD -MP -MF"$(@:%.o=%.d)"
 # libraries
 LIBS = -lc -lm -lnosys
 LIBDIR =
-LDFLAGS = $(MCU) -specs=nano.specs -T$(LDSCRIPT) $(LIBDIR) $(LIBS) -Wl,-Map=$(BUILD_DIR)/$(TARGET).map,--cref -Wl,--gc-sections
+ifeq ($(PRINTF_FLOAT), 1)
+GCC_FLOAT = -u _printf_float
+else
+GCC_FLOAT =
+endif
+LDFLAGS = $(MCU) -specs=nano.specs -T$(LDSCRIPT) $(LIBDIR) $(LIBS) -Wl,-Map=$(BUILD_DIR)/$(TARGET).map,--cref -Wl,--gc-sections $(GCC_FLOAT)
 
 # default action: build all
 PHONY += all
