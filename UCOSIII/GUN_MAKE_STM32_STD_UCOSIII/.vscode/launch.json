@@ -1,0 +1,42 @@
+{
+	// 使用 IntelliSense 了解相关属性。
+	// 悬停以查看现有属性的描述。
+	// 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"cwd": "${workspaceRoot}",
+			// "executable": "Build/${workspaceFolderBasename}.elf",
+			"executable": "Build/target.elf",
+			"name": "stlink Debug Microcontroller",
+			"request": "launch",
+			"type": "cortex-debug",
+			"servertype": "stlink",
+			"device":"STM32F103ZE",    //当前芯片型号
+			"interface":"swd",
+			"gdbPath": "C:/ST/STM32CubeIDE_1.6.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.9-2020-q2-update.win32_1.5.0.202011040924/tools/bin/arm-none-eabi-gdb.exe",
+			"configFiles": [
+				"${workspaceRoot}/GUN/debug-tools/stlink.cfg",
+				"${workspaceRoot}/GUN/debug-tools/stm32f1x.cfg",
+			],
+			"preLaunchTask": "build"
+		},
+		{
+			"cwd": "${workspaceRoot}",
+			// "executable": "Build/${workspaceFolderBasename}.elf",
+			"executable": "Build/target.elf",
+			"name": "jlink Debug Microcontroller",
+			"request": "launch",
+			"type": "cortex-debug",
+			"servertype": "jlink",
+			"device":"STM32F103ZE",    //当前芯片型号
+			"interface":"swd",
+			"gdbPath": "C:/ST/STM32CubeIDE_1.6.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.9-2020-q2-update.win32_1.5.0.202011040924/tools/bin/arm-none-eabi-gdb.exe",
+			"configFiles": [
+				"${workspaceRoot}/GUN/debug-tools/jlink.cfg",
+				"${workspaceRoot}/GUN/debug-tools/stm32f1x.cfg",
+			],
+			"preLaunchTask": "build"
+		},
+	]
+}
