@@ -55,3 +55,8 @@ int main(void)
 	}
 }
 
+// 13.229.188.59 github.com
+// 185.199.109.153 assets-cdn.github.com
+// 104.244.46.186 github.global.ssl.fastly.net
+// 185.199.109.133 avatars1.githubusercontent.com
+// 185.199.108.133 avatars2.githubusercontent.com
