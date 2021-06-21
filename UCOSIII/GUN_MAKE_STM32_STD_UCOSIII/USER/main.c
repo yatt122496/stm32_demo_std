@@ -167,8 +167,10 @@ void led0_task(void *p_arg)
 	while(1)
 	{
 		LED0=0;
+		ITM_SendChar(0xaa);
 		OSTimeDlyHMSM(0,0,0,200,OS_OPT_TIME_HMSM_STRICT,&err); //—” ±200ms
 		LED0=1;
+		ITM_SendChar(0xbb);
 		OSTimeDlyHMSM(0,0,0,500,OS_OPT_TIME_HMSM_STRICT,&err); //—” ±500ms
 	}
 }
