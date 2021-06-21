@@ -127,7 +127,7 @@
         <tRSysVw>0</tRSysVw>
         <sRunDeb>0</sRunDeb>
         <sLrtime>1</sLrtime>
-        <nTsel>11</nTsel>
+        <nTsel>6</nTsel>
         <sDll></sDll>
         <sDllPa></sDllPa>
         <sDlgDll></sDlgDll>
@@ -138,9 +138,14 @@
         <tDlgDll></tDlgDll>
         <tDlgPa></tDlgPa>
         <tIfile></tIfile>
-        <pMon>STLink\ST-LINKIII-KEIL_SWO.dll</pMon>
+        <pMon>Segger\JL2CM3.dll</pMon>
       </DebugOpt>
       <TargetDriverDllRegistry>
+        <SetRegEntry>
+          <Number>0</Number>
+          <Key>JL2CM3</Key>
+          <Name>-U788594195 -O78 -S4 -A0 -C0 -JU1 -JI127.0.0.1 -JP0 -RST0 -N00("ARM CoreSight SW-DP") -D00(1BA01477) -L00(4) -TO19 -TC72000000 -TP21 -TDS800B -TDT0 -TDC1F -TIE1 -TIP0 -TB1 -TFE0 -FO7 -FD20000000 -FC1000 -FN1 -FF0STM32F10x_512.FLM -FS08000000 -FL080000 -FP0($$Device:STM32F103ZE$Flash/STM32F10x_512.FLM)</Name>
+        </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
           <Key>DLGDARM</Key>
@@ -164,7 +169,7 @@
         <SetRegEntry>
           <Number>0</Number>
           <Key>DLGUARM</Key>
-          <Name>(105=-1,-1,-1,-1,0)</Name>
+          <Name></Name>
         </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
@@ -183,14 +188,14 @@
           <Type>0</Type>
           <LineNumber>599</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134222552</Address>
+          <Address>134222692</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>1</BreakIfRCount>
-          <Filename>C:\file\2锛屾爣鍑嗕緥绋?搴撳嚱鏁扮増鏈?瀹為獙4 涓插彛瀹為獙\STM32F10x_FWLib\src\stm32f10x_usart.c</Filename>
+          <Filename>..\STM32F10x_FWLib\src\stm32f10x_usart.c</Filename>
           <ExecCommand></ExecCommand>
           <Expression>\\USART\../STM32F10x_FWLib/src/stm32f10x_usart.c\599</Expression>
         </Bp>
@@ -237,8 +242,8 @@
         <eProf>0</eProf>
         <aLa>0</aLa>
         <aPa1>0</aPa1>
-        <AscS4>0</AscS4>
-        <aSer4>0</aSer4>
+        <AscS4>1</AscS4>
+        <aSer4>1</aSer4>
         <StkLoc>1</StkLoc>
         <TrcWin>0</TrcWin>
         <newCpu>0</newCpu>

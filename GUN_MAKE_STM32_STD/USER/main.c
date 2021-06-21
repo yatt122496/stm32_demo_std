@@ -47,6 +47,7 @@ int main(void)
 				printf("请输入数据,以回车键结束\n");
 				printf("float num = %.4f\n", num);
 				num += 0.1f;
+				ITM_SendChar('A');
 			}
 			if(times%30==0)LED0=!LED0;//闪烁LED,提示系统正在运行.
 			delay_ms(10);
