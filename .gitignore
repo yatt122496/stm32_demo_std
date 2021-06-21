@@ -77,5 +77,7 @@
 /*/*/USER/*.uvoptx
 /*/USER/*.saved_uv4
 /*/*/USER/*.saved_uv4
-/*/USER/*.uvprojx
-/*/*/USER/*.uvprojx
+/*/USER/*.map
+/*/*/USER/*.map
+/*/USER/*.lst
+/*/*/USER/*.lst
