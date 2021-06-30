@@ -53,6 +53,7 @@ int _write(int fd, char *ptr, int len)
 
     while (*ptr && (i < len)) {
 		while((USART1->SR&0X40)==0);//循环发送,直到发送完毕
+		// ITM_SendChar((u8) *ptr);
     	USART1->DR = (u8) *ptr;
         // if (*ptr == '\n') {
         //     while((USART1->SR&0X40)==0);//循环发送,直到发送完毕
@@ -67,11 +68,11 @@ int _write(int fd, char *ptr, int len)
 #else
 #pragma import(__use_no_semihosting)
 //标准库需要的支持函数
-struct __FILE 
-{ 
-	int handle; 
+struct __FILE
+{
+	int handle;
 
-}; 
+};
 
 FILE __stdout;
 //定义_sys_exit()以避免使用半主机模式

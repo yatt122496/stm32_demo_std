@@ -13,6 +13,7 @@
 			"executable": "Build/target.elf",
 			"name": "stlink Debug Microcontroller",
 			"device":"STM32F103ZE",    //当前芯片型号
+			"runToMain": true,
 			"svdFile": "${workspaceRoot}/GUN/debug-tools/STM32F103.svd",
 			"showDevDebugOutput": false,
 			"configFiles": [
