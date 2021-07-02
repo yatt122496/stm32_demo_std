@@ -30,7 +30,7 @@
 						"port": 0,
 						"type": "console",
 						"label": "SWO output",
-						"encoding":"ascii"
+						"encoding":"utf8",
 					}
 				]
 			},

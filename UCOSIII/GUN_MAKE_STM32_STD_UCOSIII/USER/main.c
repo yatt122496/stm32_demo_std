@@ -167,10 +167,9 @@ void led0_task(void *p_arg)
 	while(1)
 	{
 		LED0=0;
-		ITM_SendChar(0xaa);
+		ITM_SendChar(0x20);
 		OSTimeDlyHMSM(0,0,0,200,OS_OPT_TIME_HMSM_STRICT,&err); //延时200ms
 		LED0=1;
-		ITM_SendChar(0xbb);
 		OSTimeDlyHMSM(0,0,0,500,OS_OPT_TIME_HMSM_STRICT,&err); //延时500ms
 	}
 }
@@ -187,7 +186,7 @@ void led1_task(void *p_arg)
 	{
 		if(USART_RX_STA&0x8000) {
 			len=USART_RX_STA&0x3fff;//得到此次接收到的数据长度
-			printf("\r\nYour Send Message:\r\n");
+			printf("\r\n你发送的信息是\r\n");
 			for(t=0;t<len;t++)
 			{
 				USART_SendData(USART1, USART_RX_BUF[t]);//向串口1发送数据
@@ -202,7 +201,8 @@ void led1_task(void *p_arg)
 				printf("@ALIENTEK\r\n\r\n");
 			}
 			if(times%200==0){
-				printf("Please input data to end with enter\n");
+				printf("\r\n哈哈\r\n");
+				printf("\r\nPlease input data to end with enter\r\n");
 			}
 			if(times%30==0)LED1=!LED1;//闪烁LED,提示系统正在运行.
 			delay_ms(10);
@@ -221,7 +221,7 @@ void float_task(void *p_arg)
 	{
 		float_num+=0.01f;
 		OS_CRITICAL_ENTER();	//进入临界区
-		printf("float_num: %.4f\r\n",float_num);
+		printf("\r\nfloat_num: %.4f\r\n",float_num);
 		OS_CRITICAL_EXIT();		//退出临界区
 		delay_ms(500);			//延时500ms
 	}

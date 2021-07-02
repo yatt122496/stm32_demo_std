@@ -52,9 +52,9 @@ int _write(int fd, char *ptr, int len)
     }
 
     while (*ptr && (i < len)) {
-		while((USART1->SR&0X40)==0);//循环发送,直到发送完毕
-		// ITM_SendChar((u8) *ptr);
-    	USART1->DR = (u8) *ptr;
+		// while((USART1->SR&0X40)==0);//循环发送,直到发送完毕
+    	// USART1->DR = (u8) *ptr;
+		ITM_SendChar((u8) *ptr);
         // if (*ptr == '\n') {
         //     while((USART1->SR&0X40)==0);//循环发送,直到发送完毕
     	// 	USART1->DR = (u8) '\r';
