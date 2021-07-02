@@ -31,9 +31,68 @@
 						"type": "console",
 						"label": "SWO output",
 						"encoding":"utf8",
-					}
+					},
+					// {
+                    //     "type": "graph",
+                    //     "port": 1,
+                    //     "encoding": "float",
+                    //     "graphId": "1",
+                    //     "scale": 1
+                    // },
+                    // {
+                    //     "type": "graph",
+                    //     "port": 2,
+                    //     "encoding": "unsigned",
+                    //     "graphId": "2",
+                    //     "scale": 1
+                    // },
 				]
 			},
+			// "graphConfig": [
+            //     {
+            //         "label": "realtime",
+            //         "timespan": 1,
+            //         "type": "realtime",
+            //         "annotate": true,
+            //         "maximum": 6.40,
+            //         "minimum": 6.34,
+            //         "plots": [
+            //             {
+            //                 "graphId": "1",
+            //                 "label": "data 1",
+            //                 "color": "#53753c"
+            //             },
+			// 			// {
+            //             //     "graphId": "2",
+            //             //     "label": "data 2",
+            //             //     "color": "#955f20"
+            //             // }
+            //         ]
+            //     },
+            //     // {
+            //     //     "label": "x-y-plot",
+            //     //     "timespan": 60,
+            //     //     "type": "x-y-plot",
+			// 	// 	"xGraphId": "2",
+			// 	// 	"xMaximum": 255,
+			// 	// 	"xMinimum": 0,
+			// 	// 	"yGraphId": "1",
+			// 	// 	"yMaximum": 65535,
+			// 	// 	"yMinimum": 0,
+            //     //     "plots": [
+            //     //         {
+            //     //             "graphId": "1",
+            //     //             "label": "data 1",
+            //     //             "color": "#53753c"
+            //     //         },
+			// 	// 		{
+            //     //             "graphId": "2",
+            //     //             "label": "data 2",
+            //     //             "color": "#955f20"
+            //     //         }
+            //     //     ]
+            //     // },
+            // ],
 			"gdbPath": "C:/ST/STM32CubeIDE_1.6.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.9-2020-q2-update.win32_1.5.0.202011040924/tools/bin/arm-none-eabi-gdb.exe",
 			"preLaunchTask": "build",
 			"interface":"swd",
