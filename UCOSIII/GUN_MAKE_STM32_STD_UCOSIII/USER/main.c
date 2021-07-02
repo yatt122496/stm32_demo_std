@@ -57,6 +57,25 @@ CPU_STK	FLOAT_TASK_STK[FLOAT_STK_SIZE] __attribute__((aligned(8)));
 //任务函数
 void float_task(void *p_arg);
 
+/*****************************************************************
+ *	ITM 调试端口 SWO 串行输出
+ *	ch :	输出 32 bit 数据
+ *	port:	输出端口号：1 ~ 31 （端口 0 默认为调试信息输出，
+ *				函数名为：ITM_SendChar(uint32_t ch)）
+ *	返回值：uint32_t 类型，值为发送的数据
+ ****************************************************************/
+static __INLINE uint32_t ITM_SendChar_num(uint32_t ch, uint8_t port)
+{
+  if ((CoreDebug->DEMCR & CoreDebug_DEMCR_TRCENA_Msk)  &&      /* Trace enabled */
+      (ITM->TCR & ITM_TCR_ITMENA_Msk)                  &&      /* ITM enabled */
+      (ITM->TER & (1ul << port)        )                    )     /* ITM Port #0 enabled */
+  {
+    while (ITM->PORT[port].u32 == 0);
+    ITM->PORT[port].u32 = ch;
+  }
+  return (ch);
+}
+
 int main(void)
 {
 	OS_ERR err;
@@ -167,10 +186,9 @@ void led0_task(void *p_arg)
 	while(1)
 	{
 		LED0=0;
-		ITM_SendChar(0x20);
-		OSTimeDlyHMSM(0,0,0,200,OS_OPT_TIME_HMSM_STRICT,&err); //延时200ms
+		OSTimeDlyHMSM(0,0,0,100,OS_OPT_TIME_HMSM_STRICT,&err); //延时200ms
 		LED0=1;
-		OSTimeDlyHMSM(0,0,0,500,OS_OPT_TIME_HMSM_STRICT,&err); //延时500ms
+		OSTimeDlyHMSM(0,0,0,900,OS_OPT_TIME_HMSM_STRICT,&err); //延时500ms
 	}
 }
 
@@ -201,7 +219,6 @@ void led1_task(void *p_arg)
 				printf("@ALIENTEK\r\n\r\n");
 			}
 			if(times%200==0){
-				printf("\r\n哈哈\r\n");
 				printf("\r\nPlease input data to end with enter\r\n");
 			}
 			if(times%30==0)LED1=!LED1;//闪烁LED,提示系统正在运行.
@@ -217,13 +234,15 @@ void float_task(void *p_arg)
 {
 	CPU_SR_ALLOC();
 	static float float_num=0.01;
+	u32 *a = (u32 *)&float_num;
 	while(1)
 	{
-		float_num+=0.01f;
+		float_num+=0.01;
 		OS_CRITICAL_ENTER();	//进入临界区
 		printf("\r\nfloat_num: %.4f\r\n",float_num);
+		ITM_SendChar_num(*a, 1);
 		OS_CRITICAL_EXIT();		//退出临界区
-		delay_ms(500);			//延时500ms
+		delay_ms(10);			//延时500ms
 	}
 }
 
