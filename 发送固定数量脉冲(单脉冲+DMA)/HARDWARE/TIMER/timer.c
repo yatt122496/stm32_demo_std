@@ -76,6 +76,7 @@ void tim2_dma_pulse_Output(u16 arr,u16 psc,u8 wDuty_cycle,u16 wPulse_num)
 	TIM_SetCompare1(TIM2,arr * (100 - wDuty_cycle) / 100);//占空比填入比较寄存器
 	
 	TIM2->EGR|=1;
+	DMA_Cmd(DMA1_Channel2, DISABLE);                           //DMA失能才能设置
 	DMA_SetCurrDataCounter(DMA1_Channel2,wPulse_num);             //设置DMA长度，即脉冲数量
 	DMA_Cmd(DMA1_Channel2, ENABLE);                            //开启
 }
@@ -156,6 +157,7 @@ void tim3_dma_pulse_Output(u16 arr,u16 psc,u8 wDuty_cycle,u16 wPulse_num)
 	TIM_SetCompare1(TIM3,arr * (100 - wDuty_cycle) / 100);                          //占空比填入比较寄存器
 	
 	TIM3->EGR|=1;
+	DMA_Cmd(DMA1_Channel3, DISABLE);                           //DMA失能才能设置
 	DMA_SetCurrDataCounter(DMA1_Channel3,wPulse_num);             //设置DMA长度，即脉冲数量
 	DMA_Cmd(DMA1_Channel3, ENABLE);                            //开启
 }
