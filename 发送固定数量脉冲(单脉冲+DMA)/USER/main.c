@@ -31,6 +31,11 @@ int main(void)
 	delay_ms(10);
 	tim2_dma_pulse_Output(10,9,60,5);
 	tim3_dma_pulse_Output(10,9,40,5);
-	while(1);
+	while(1) {
+		ITM_SendChar('B');
+		tim3_dma_pulse_Output(2000,7200,50,5);
+		delay_ms(1000);
+		delay_ms(1000);
+	}
 }
 

@@ -1,4 +1,5 @@
 #include "timer.h"
+#include "led.h"
 
 static u16 wDma_tim2_cr1 = 0;
 void TIM2_PWM_DMA_Init(void)
@@ -12,7 +13,7 @@ void TIM2_PWM_DMA_Init(void)
 
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE);	//使能定时器3时钟
  	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA  | RCC_APB2Periph_AFIO, ENABLE);  //使能GPIO外设和AFIO复用功能模块时钟
-	
+	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA1, ENABLE);
  
    //设置该引脚为复用输出功能,输出TIM3 CH2的PWM脉冲波形	GPIOB.5
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0; //TIM_CH2
@@ -27,7 +28,7 @@ void TIM2_PWM_DMA_Init(void)
 	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;  //TIM向上计数模式
 	TIM_TimeBaseInit(TIM2, &TIM_TimeBaseStructure); //根据TIM_TimeBaseInitStruct中指定的参数初始化TIMx的时间基数单位
 	
-	TIM2->CR1 |= (1<<3) | (1 << 2);
+	TIM2->CR1 |= (1<<3);
 	//初始化TIM3 Channel2 PWM模式
 	
 	TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM2; //选择定时器模式:TIM脉冲宽度调制模式2
@@ -64,7 +65,7 @@ void TIM2_PWM_DMA_Init(void)
 	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0x02;
 	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
 	NVIC_Init(&NVIC_InitStructure);
-	DMA_ClearFlag(DMA1_Channel2_IRQn);                                         //清除DMA所有标志 
+	DMA_ClearFlag(DMA1_FLAG_GL3);                                         //清除DMA所有标志 
 	DMA_ITConfig(DMA1_Channel2,DMA_IT_TC,ENABLE);                              //开传输完成中断
 }
 
@@ -91,32 +92,34 @@ void TIM3_PWM_DMA_Init(void)
 	DMA_InitTypeDef          DMA_InitStructure;
 	
 
-	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM3, ENABLE);	//使能定时器3时钟
- 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA  | RCC_APB2Periph_AFIO, ENABLE);  //使能GPIO外设和AFIO复用功能模块时钟
+	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM3, ENABLE); //时钟使能
+ 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB  | RCC_APB2Periph_AFIO, ENABLE);  //使能GPIO外设和AFIO复用功能模块时钟
+	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA1, ENABLE);
 	
- 
-   //设置该引脚为复用输出功能,输出TIM3 CH2的PWM脉冲波形	GPIOB.5
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6; //TIM_CH2
+	GPIO_PinRemapConfig(GPIO_PartialRemap_TIM3, ENABLE); //Timer3部分重映射  TIM3_CH2->PB5
+	
+    //设置该引脚为复用输出功能,输出TIM3 CH2的PWM脉冲波形	GPIOB.5
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_5; //TIM_CH2
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;  //复用推挽输出
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-	GPIO_Init(GPIOA, &GPIO_InitStructure);//初始化GPIO
+	GPIO_Init(GPIOB, &GPIO_InitStructure);//初始化GPIO
  
    //初始化TIM3
 	TIM_TimeBaseStructure.TIM_Period = 0; //设置在下一个更新事件装入活动的自动重装载寄存器周期的值
 	TIM_TimeBaseStructure.TIM_Prescaler =0; //设置用来作为TIMx时钟频率除数的预分频值 
-	TIM_TimeBaseStructure.TIM_ClockDivision = 0; //设置时钟分割:TDTS = Tck_tim
+	TIM_TimeBaseStructure.TIM_ClockDivision = TIM_CKD_DIV1; //设置时钟分割:TDTS = Tck_tim
 	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;  //TIM向上计数模式
 	TIM_TimeBaseInit(TIM3, &TIM_TimeBaseStructure); //根据TIM_TimeBaseInitStruct中指定的参数初始化TIMx的时间基数单位
 	
-	TIM3->CR1 |= (1<<3) | (1 << 2);
+	TIM3->CR1 |= (1<<3);
 	//初始化TIM3 Channel2 PWM模式
 	
 	TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM2; //选择定时器模式:TIM脉冲宽度调制模式2
  	TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable; //比较输出使能
-	TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High; //输出极性:TIM输出比较极性高
-	TIM_OC1Init(TIM3, &TIM_OCInitStructure);  //根据T指定的参数初始化外设TIM3 OC2
+	TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_Low; //输出极性:TIM输出比较极性高
+	TIM_OC2Init(TIM3, &TIM_OCInitStructure);  //根据T指定的参数初始化外设TIM3 OC2
 
-	TIM_OC1PreloadConfig(TIM3, TIM_OCPreload_Enable);  //使能TIM3在CCR2上的预装载寄存器
+	TIM_OC2PreloadConfig(TIM3, TIM_OCPreload_Enable);  //使能TIM3在CCR2上的预装载寄存器
 	
 	TIM3->CCR1=0;
 //	TIM3->EGR|=1;
@@ -139,13 +142,14 @@ void TIM3_PWM_DMA_Init(void)
 	TIM_DMACmd(TIM3, TIM_DMA_Update, ENABLE);     //定时器2 TIM_DMA_Update使能
 	wDma_tim3_cr1 = TIM3->CR1 | 0x01;
 //	TIM_Cmd(TIM3, ENABLE);  //使能TIM3
+	//中断优先级NVIC设置
 	
 	NVIC_InitStructure.NVIC_IRQChannel = DMA1_Channel3_IRQn;   
 	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 1;     // 优先级设置
-	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0x01;
+	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 1;
 	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
 	NVIC_Init(&NVIC_InitStructure);
-	DMA_ClearFlag(DMA1_Channel3_IRQn);                                         //清除DMA所有标志 
+	DMA_ClearFlag(DMA1_FLAG_GL3);                                         //清除DMA所有标志 
 	DMA_ITConfig(DMA1_Channel3,DMA_IT_TC,ENABLE);                              //开传输完成中断
 }
 
@@ -154,7 +158,7 @@ void tim3_dma_pulse_Output(u16 arr,u16 psc,u8 wDuty_cycle,u16 wPulse_num)
 	TIM_SetAutoreload(TIM3,arr - 1);                               //设置重装载寄存器
 	TIM_PrescalerConfig(TIM3,psc - 1,TIM_PSCReloadMode_Immediate); //设置定时器时钟分频，立即生效
 
-	TIM_SetCompare1(TIM3,arr * (100 - wDuty_cycle) / 100);                          //占空比填入比较寄存器
+	TIM_SetCompare2(TIM3,arr * (100 - wDuty_cycle) / 100);                          //占空比填入比较寄存器
 	
 	TIM3->EGR|=1;
 	DMA_Cmd(DMA1_Channel3, DISABLE);                           //DMA失能才能设置
@@ -166,8 +170,8 @@ void DMA1_Channel3_IRQHandler(void)
 {
     if(DMA_GetITStatus(DMA1_FLAG_TC3))
     {
-		DMA_Cmd(DMA1_Channel3, DISABLE);                           //DMA失能才能设置
-        DMA_ClearFlag(DMA1_Channel3_IRQn);			
+		ITM_SendChar('A');
+		DMA_Cmd(DMA1_Channel3, DISABLE);                           //DMA失能才能设置		
 		DMA_ClearFlag(DMA1_FLAG_TC3);
     }
 }
@@ -176,8 +180,8 @@ void DMA1_Channel2_IRQHandler(void)
 {
     if(DMA_GetITStatus(DMA1_FLAG_TC2))
     {
-		DMA_Cmd(DMA1_Channel2, DISABLE);                           //DMA失能才能设置
-        DMA_ClearFlag(DMA1_Channel2_IRQn);			
+		ITM_SendChar('C');
+		DMA_Cmd(DMA1_Channel2, DISABLE);                           //DMA失能才能设置		
 		DMA_ClearFlag(DMA1_FLAG_TC2);
     }
 }
