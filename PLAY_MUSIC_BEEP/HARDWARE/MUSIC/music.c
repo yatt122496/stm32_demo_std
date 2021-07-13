@@ -238,7 +238,7 @@ static unsigned char bMusic_tone[] = {
 
 static void music_pwm_output(u16 wFrequency)
 {
-	TIM3->ARR = wFrequency;
+	TIM3->ARR = wFrequency - 1;
 	if (wFrequency == 1000)
 		TIM3->CCR2 = 999;
 	else
