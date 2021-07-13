@@ -74,7 +74,7 @@ TARGET = target
 ######################################
 # 是否会进行调试
 DEBUG = 1
-PRINTF_FLOAT = 1
+PRINTF_FLOAT = 0
 
 # optimization    ## 选择优化等级，优化等级低->高，可参考Keil的设置，如果程序运行不理想，优化程序或降低优化等级
 # OPT = -O0        ## 没有优化。
