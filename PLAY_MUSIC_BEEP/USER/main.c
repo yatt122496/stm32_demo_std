@@ -20,6 +20,7 @@ int main(void)
 {
 	u16 led0pwmval = 0;
 	u8 dir = 1;
+	u8 res = 0;
 	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2); //设置NVIC中断分组2:2位抢占优先级，2位响应优先级
 	delay_init();									//延时函数初始化
 	uart_init(115200);								//串口初始化为115200
@@ -28,7 +29,11 @@ int main(void)
 
 	play_music_beep(1);
 	while (1) {
-		play_music_beep(0);
+		res = play_music_beep(0);
+		if (!res) {
+			delay_ms(1000);
+			play_music_beep(1);
+		}
 		// delay_ms(1);
 //		if (dir)
 //			led0pwmval++;

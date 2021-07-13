@@ -1,7 +1,8 @@
 #include "music.h"
 #include "timer.h"
 
-#define MUSIC_LENGTH	10
+#define MUSIC_LENGTH	255
+#define	MUSIC_STEP_TIME	129		// 129ms
 u16 tone[] = {
 //  低7 1   2   3   4   5   6   7   高1 高2 高3  高4 高5 不发音
 	247, 262,294,330,349,392,440,494,523,587,659,698,784,1000
@@ -242,7 +243,8 @@ static void music_pwm_output(u16 wFrequency)
 		TIM3->CCR2 = 999;
 	else
 		TIM3->CCR2 = wFrequency / 2;
-	TIM3->EGR |= 1;
+	if (TIM3->CNT > wFrequency)
+		TIM3->EGR |= 1;
 }
 
 u8 play_music_beep(u8 control)
@@ -255,20 +257,25 @@ u8 play_music_beep(u8 control)
 	if (control == 1) {
 		music_play_step = 0;
 		music_play_state = 0;
+		TIM3->CCMR1 |= (3 << 12);
+		TIM3->CR1 |= (1 << 0);
 	} else if (control == 2) {
 		music_play_step = MUSIC_LENGTH;
-		music_pwm_output(tone_pwm_arr[0]);
+		TIM3->CCMR1 &= ~(3 << 12);
+		TIM3->CR1 &= ~(1 << 0);
 	}
 	if (music_play_step < MUSIC_LENGTH) {
 		if (!music_play_state) {
 			music_play_state++;
 			music_play_time = Sys_time;
-			music_play_delay = bMusic_time[music_play_step] * 129 - 1;
+			music_play_delay = bMusic_time[music_play_step] * MUSIC_STEP_TIME - 1;
 			music_pwm_output(tone_pwm_arr[bMusic_tone[music_play_step]]);
 		} else if (Sys_time - music_play_time > music_play_delay) {
 			music_play_step++;
-			if (music_play_step == MUSIC_LENGTH)
-				music_pwm_output(tone_pwm_arr[0]);
+			if (music_play_step == MUSIC_LENGTH) {
+				TIM3->CCMR1 &= ~(3 << 12);
+				TIM3->CR1 &= ~(1 << 0);
+			}
 			music_play_state = 0;
 		}
 		res = 1;
