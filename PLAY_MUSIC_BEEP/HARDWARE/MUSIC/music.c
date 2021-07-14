@@ -1,11 +1,14 @@
 #include "music.h"
 #include "timer.h"
 
-#define MUSIC_LENGTH	255
-#define	MUSIC_STEP_TIME	129		// 129ms
+#define MUSIC_LENGTH		255
+#define	MUSIC_STEP_TIME		129		// 129ms
+#define	MUSIC_CONTINUE_TIME	13		// 13ms
+#define	TONE_FLAG		0x80
+#define	TONE_FLAG_Msk	0x0f
 u16 tone[] = {
-//  低7 1   2   3   4   5   6   7   高1 高2 高3  高4 高5 不发音
-	247, 262,294,330,349,392,440,494,523,587,659,698,784,1000
+//  低7  1    2    3    4    5    6    7    高1  高2  高3   高4  高5  不发音
+	247, 262, 294, 330, 349, 392, 440, 494, 523, 587, 659, 698, 784, 1000
 };//音频数据表
 u16 tone_pwm_arr[] = {
 	1000,3816,3401,3030,2865,2551,2272,2024,1912,1703,1517,1432,1275,1000
@@ -236,7 +239,7 @@ static unsigned char bMusic_tone[] = {
 //  阳。
 };
 
-static void music_pwm_output(u16 wFrequency)
+static __INLINE void music_pwm_output(u16 wFrequency)
 {
 	TIM4->ARR = wFrequency - 1;
 	if (wFrequency == 1000)
@@ -247,34 +250,46 @@ static void music_pwm_output(u16 wFrequency)
 		TIM4->EGR |= 1;
 }
 
+static __INLINE void TIM_PWM_OPEN(void)
+{
+	TIM4->CCMR2 |= (3 << 4);
+	TIM4->CR1 |= (1 << 0);
+}
+
+static __INLINE void TIM_PWM_CLOSE(void)
+{
+	TIM4->CCMR2 &= ~(3 << 4);
+	TIM4->CR1 &= ~(1 << 0);
+}
+
 u8 play_music_beep(u8 control)
 {
 	u8 res = 0;
+	int temp;
 	static u8 music_play_state = 0;
-	static u16 music_play_step = MUSIC_LENGTH;
+	static u16 music_play_step = MUSIC_LENGTH, tone_play_step_continue = 0;
 	static u32 music_play_delay = 0, music_play_time = 0;
 
 	if (control == 1) {
 		music_play_step = 0;
 		music_play_state = 0;
-		TIM4->CCMR2 |= (3 << 4);
-		TIM4->CR1 |= (1 << 0);
+		TIM_PWM_OPEN();
 	} else if (control == 2) {
 		music_play_step = MUSIC_LENGTH;
-		TIM4->CCMR2 &= ~(3 << 4);
-		TIM4->CR1 &= ~(1 << 0);
+		TIM_PWM_CLOSE();
 	}
 	if (music_play_step < MUSIC_LENGTH) {
 		if (!music_play_state) {
 			music_play_state++;
 			music_play_time = Sys_time;
 			music_play_delay = bMusic_time[music_play_step] * MUSIC_STEP_TIME - 1;
-			music_pwm_output(tone_pwm_arr[bMusic_tone[music_play_step]]);
+			temp = bMusic_tone[music_play_step];
+			tone_play_step_continue = tone_pwm_arr[temp & TONE_FLAG_Msk];
+			music_pwm_output(tone_play_step_continue);
 		} else if (Sys_time - music_play_time > music_play_delay) {
 			music_play_step++;
 			if (music_play_step == MUSIC_LENGTH) {
-				TIM4->CCMR2 &= ~(3 << 4);
-				TIM4->CR1 &= ~(1 << 0);
+				TIM_PWM_CLOSE();
 			}
 			music_play_state = 0;
 		}
