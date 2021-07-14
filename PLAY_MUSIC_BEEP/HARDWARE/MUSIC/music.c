@@ -238,31 +238,31 @@ static unsigned char bMusic_tone[] = {
 
 static void music_pwm_output(u16 wFrequency)
 {
-	TIM3->ARR = wFrequency - 1;
+	TIM4->ARR = wFrequency - 1;
 	if (wFrequency == 1000)
-		TIM3->CCR2 = 999;
+		TIM4->CCR3 = 999;
 	else
-		TIM3->CCR2 = wFrequency / 2;
-	if (TIM3->CNT > wFrequency)
-		TIM3->EGR |= 1;
+		TIM4->CCR3 = wFrequency / 2;
+	if (TIM4->CNT > wFrequency)
+		TIM4->EGR |= 1;
 }
 
 u8 play_music_beep(u8 control)
 {
 	u8 res = 0;
 	static u8 music_play_state = 0;
-	static u16 music_play_step = 0;
+	static u16 music_play_step = MUSIC_LENGTH;
 	static u32 music_play_delay = 0, music_play_time = 0;
 
 	if (control == 1) {
 		music_play_step = 0;
 		music_play_state = 0;
-		TIM3->CCMR1 |= (3 << 12);
-		TIM3->CR1 |= (1 << 0);
+		TIM4->CCMR2 |= (3 << 4);
+		TIM4->CR1 |= (1 << 0);
 	} else if (control == 2) {
 		music_play_step = MUSIC_LENGTH;
-		TIM3->CCMR1 &= ~(3 << 12);
-		TIM3->CR1 &= ~(1 << 0);
+		TIM4->CCMR2 &= ~(3 << 4);
+		TIM4->CR1 &= ~(1 << 0);
 	}
 	if (music_play_step < MUSIC_LENGTH) {
 		if (!music_play_state) {
@@ -273,8 +273,8 @@ u8 play_music_beep(u8 control)
 		} else if (Sys_time - music_play_time > music_play_delay) {
 			music_play_step++;
 			if (music_play_step == MUSIC_LENGTH) {
-				TIM3->CCMR1 &= ~(3 << 12);
-				TIM3->CR1 &= ~(1 << 0);
+				TIM4->CCMR2 &= ~(3 << 4);
+				TIM4->CR1 &= ~(1 << 0);
 			}
 			music_play_state = 0;
 		}

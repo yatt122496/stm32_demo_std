@@ -18,21 +18,26 @@
 
 int main(void)
 {
-	u16 led0pwmval = 0;
-	u8 dir = 1;
-	u8 res = 0;
+	u8 res, bkey;
 	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2); //设置NVIC中断分组2:2位抢占优先级，2位响应优先级
 	delay_init();									//延时函数初始化
 	uart_init(115200);								//串口初始化为115200
 	LED_Init();										//LED端口初始化
-	TIM3_PWM_Init(900 - 1, 72 - 1);						//不分频。PWM频率=72000000/900=80Khz
+	KEY_Init();
+	TIM4_PWM_Init(900 - 1, 72 - 1);						//不分频。PWM频率=72000000/900=80Khz
 
-	play_music_beep(1);
 	while (1) {
+		bkey = KEY_Scan(0);
+		if (bkey == KEY0_PRES) {
+			play_music_beep(1);
+		} else if (bkey == WKUP_PRES) {
+			play_music_beep(2);
+		}
 		res = play_music_beep(0);
 		if (!res) {
-			delay_ms(1000);
-			play_music_beep(1);
+			LED1 = 1;
+		} else {
+			LED1 = 0;
 		}
 		// delay_ms(1);
 //		if (dir)
