@@ -256,7 +256,7 @@ static __INLINE void music_pwm_output(u16 wFrequency)
 {
 	TIM4->ARR = wFrequency - 1;
 	if (wFrequency == 1000)
-		TIM4->CCR3 = 999;
+		TIM4->CCR3 = wFrequency;
 	else
 		TIM4->CCR3 = wFrequency / 2;
 	if (TIM4->CNT > wFrequency)
@@ -283,11 +283,11 @@ u8 play_music_beep(u8 control)
 	static u16 music_play_step = MUSIC_LENGTH, tone_play_step_continue = 0;
 	static u32 music_play_delay = 0, music_play_time = 0;
 
-	if (control == 1) {
+	if (control == MUSIC_PLAY) {
 		music_play_step = 0;
 		music_play_state = 0;
 		TIM_PWM_OPEN();
-	} else if (control == 2) {
+	} else if (control == MUSIC_STOP) {
 		music_play_step = MUSIC_LENGTH;
 		TIM_PWM_CLOSE();
 	}
