@@ -25,7 +25,7 @@
             "defines": [
                 "STM32F10X_HD",
                 "USE_STDPERIPH_DRIVER",
-                "__GNUC__",
+                // "__GNUC__",
                 "__arm__",
                 "__align(x)=",
                 "__ALIGNOF__(x)=",
