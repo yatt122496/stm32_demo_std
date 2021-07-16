@@ -152,7 +152,7 @@ CPU = -mcpu=cortex-m3
 # mcu
 MCU = $(CPU) -mthumb $(FPU) $(FLOAT-ABI)
 
-GCC_PATH = "D:/10 2020-q4-major/bin"
+GCC_PATH = "D:/GUN_GCC/bin"
 #######################################
 # binaries
 #######################################

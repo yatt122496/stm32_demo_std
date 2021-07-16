@@ -34,7 +34,7 @@
 					}
 				]
 			},
-			"gdbPath": "D:/10 2020-q4-major/bin/arm-none-eabi-gdb.exe",
+			"gdbPath": "D:/GUN_GCC/bin/arm-none-eabi-gdb.exe",
 			"preLaunchTask": "build",
 			"interface":"swd",
 		},
