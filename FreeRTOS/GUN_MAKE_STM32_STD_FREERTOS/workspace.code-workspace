@@ -14,7 +14,11 @@
 			"ieeefp.h": "c",
 			"led.h": "c",
 			"stm32f10x.h": "c",
-			"freertos.h": "c"
+			"freertos.h": "c",
+			"core_cm3.h": "c",
+			"stdint.h": "c",
+			"_default_types.h": "c",
+			"limits.h": "c"
 		},
 		"cortex-debug.armToolchainPath": "C:/ST/STM32CubeIDE_1.6.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.9-2020-q2-update.win32_1.5.0.202011040924/tools/bin"
 	}

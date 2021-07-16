@@ -26,7 +26,7 @@ int main(void)
 	LED_Init();										//LED端口初始化
 	KEY_Init();
 	TIM4_PWM_Init(900 - 1, 72 - 1);						//不分频。PWM频率=72000000/900=80Khz
-
+	play_music_beep(2);
 	// play_music_beep(1);
 
 	while (1) {

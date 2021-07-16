@@ -147,7 +147,7 @@ CPU = -mcpu=cortex-m3
 # mcu
 MCU = $(CPU) -mthumb $(FPU) $(FLOAT-ABI)
 
-GCC_PATH = "C:/ST/STM32CubeIDE_1.6.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.9-2020-q2-update.win32_1.5.0.202011040924/tools/bin"
+GCC_PATH = "D:/10 2020-q4-major/bin"
 #######################################
 # binaries
 #######################################
