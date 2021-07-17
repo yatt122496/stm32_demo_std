@@ -256,7 +256,7 @@ static __INLINE void music_pwm_output(u16 wFrequency)
 {
 	TIM4->ARR = wFrequency - 1;
 	if (wFrequency == 1000)
-		TIM4->CCR3 = wFrequency;
+		TIM4->CCR3 = 999;
 	else
 		TIM4->CCR3 = wFrequency / 2;
 	if (TIM4->CNT > wFrequency)
